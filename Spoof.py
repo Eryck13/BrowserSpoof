@@ -31,12 +31,12 @@ def get_proxy():
                 port = (line.split(':')[1])
                 user = (line.split(':')[2])
                 ippw = (line.split(':')[3])
-                httpline = ('http://{}:{}@{}:{}'.format(user,ippw,ip,port))
+                httpline = ('{}:{}@{}:{}'.format(user,ippw,ip,port))
                 proxy_list.append(httpline)
             else:
                 ip = (line.split(':')[0])
                 port = (line.split(':')[1])
-                httpline = ('http://{}:{}'.format(ip,port))
+                httpline = ('{}:{}'.format(ip,port))
                 proxy_list.append(httpline)
     except:
         print("Proxy Error")
