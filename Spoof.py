@@ -8,6 +8,10 @@ import random
 from fake_useragent import UserAgent
 import fake_useragent
 import threading
+from concurrent.futures import ProcessPoolExecutor
+import concurrent.futures
+
+
 
 path=os.path.dirname(os.path.abspath(__file__))
 proxy_list = []
@@ -35,8 +39,7 @@ def get_proxy():
     except:
         print("Proxy Error")
 
-def spoof():
-        
+def spoof(lol):
         ranua = UserAgent()
         ua=ranua.random
         if len(proxy_list) > 0:
@@ -53,9 +56,11 @@ def spoof():
         driver.get(site)
 
 def thread():
-    for i in range(int(tasks)):
-        x = threading.Thread(target=spoof)
-        x.start()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=int(tasks)) as executor:
+        executor.map(spoof, range(int(tasks)))
+        # x = threading.Thread(target=spoof)
+        # x.start()
+        # x.join()
 
 if __name__ == "__main__":
     get_proxy()    
