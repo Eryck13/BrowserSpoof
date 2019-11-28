@@ -7,6 +7,8 @@ Fill the proxies.txt file in the following format. Ip:port:user:pass or Ip:port
 
 Download Python 3.7 or later
 
+Do this:https://geek-university.com/python/add-python-to-the-windows-path/
+
 Make sure you have the latest chrome version
 
 pip install selenium
