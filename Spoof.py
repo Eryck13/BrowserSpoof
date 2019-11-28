@@ -1,0 +1,63 @@
+import os
+from seleniumwire import webdriver
+from selenium.webdriver.chrome.options import Options
+import json
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import random
+from fake_useragent import UserAgent
+import fake_useragent
+import threading
+
+path=os.path.dirname(os.path.abspath(__file__))
+proxy_list = []
+with open(path+'\\config.txt','r') as f:
+    config = json.load(f)
+    tasks = config["Tasks"]
+    site = config["Site"]
+
+def get_proxy():
+    proxies = open(path+"//proxies.txt", 'r').read().splitlines()
+    try:
+        for line in proxies:
+            if len(line.split(':'))==4:
+                ip = (line.split(':')[0])
+                port = (line.split(':')[1])
+                user = (line.split(':')[2])
+                ippw = (line.split(':')[3])
+                httpline = ('{}:{}@{}:{}'.format(user,ippw,ip,port))
+                proxy_list.append(httpline)
+            else:
+                ip = (line.split(':')[0])
+                port = (line.split(':')[1])
+                httpline = ('{}:{}'.format(ip,port))
+                proxy_list.append(httpline)
+    except:
+        print("Proxy Error")
+
+def spoof():
+        
+        ranua = UserAgent()
+        ua=ranua.random
+        if len(proxy_list) > 0:
+            PROXY = random.choice(proxy_list)
+            proxy_list.remove(PROXY)
+        else:
+            PROXY = random.choice(proxy_list)
+        chrome_options = Options()
+        chrome_options.add_argument("user-agent="+ua)
+        chrome_options.add_argument('--incognito')
+        chrome_options.add_argument('--proxy-server=http://%s' % PROXY)
+        chrome_options.add_experimental_option("detach", True)
+        driver = webdriver.Chrome(path+"\\chromedriver.exe",options=chrome_options)
+        driver.get(site)
+
+def thread():
+    for i in range(int(tasks)):
+        x = threading.Thread(target=spoof)
+        x.start()
+
+if __name__ == "__main__":
+    get_proxy()    
+    thread()
+
