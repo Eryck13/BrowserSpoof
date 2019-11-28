@@ -10,6 +10,8 @@ import fake_useragent
 #import threadingcd 
 from concurrent.futures import ProcessPoolExecutor
 import concurrent.futures
+from seleniumwire import webdriver
+
 
 
 path=os.path.dirname(os.path.abspath(__file__))
@@ -29,12 +31,12 @@ def get_proxy():
                 port = (line.split(':')[1])
                 user = (line.split(':')[2])
                 ippw = (line.split(':')[3])
-                httpline = ('{}:{}@{}:{}'.format(user,ippw,ip,port))
+                httpline = ('http://{}:{}@{}:{}'.format(user,ippw,ip,port))
                 proxy_list.append(httpline)
             else:
                 ip = (line.split(':')[0])
                 port = (line.split(':')[1])
-                httpline = ('{}:{}'.format(ip,port))
+                httpline = ('http://{}:{}'.format(ip,port))
                 proxy_list.append(httpline)
     except:
         print("Proxy Error")
@@ -47,6 +49,7 @@ def spoof(lol):
             proxy_list.remove(PROXY)
         else:
             PROXY = random.choice(proxy_list)
+        
         chrome_options = Options()
         chrome_options.add_argument("user-agent="+ua)
         chrome_options.add_argument('--incognito')
