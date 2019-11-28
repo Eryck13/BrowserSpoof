@@ -1,5 +1,5 @@
 import os
-from seleniumwire import webdriver
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import json
 from selenium.webdriver.support.ui import Select
@@ -7,10 +7,10 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import random
 from fake_useragent import UserAgent
 import fake_useragent
-import threading
+#import threadingcd 
 from concurrent.futures import ProcessPoolExecutor
 import concurrent.futures
-
+import asyncio
 
 
 path=os.path.dirname(os.path.abspath(__file__))
@@ -20,8 +20,9 @@ with open(path+'\\config.txt','r') as f:
     tasks = config["Tasks"]
     site = config["Site"]
 
+
 def get_proxy():
-    proxies = open(path+"//proxies.txt", 'r').read().splitlines()
+    proxies = open(path+"\\proxies.txt", 'r').read().splitlines()
     try:
         for line in proxies:
             if len(line.split(':'))==4:
@@ -50,9 +51,11 @@ def spoof(lol):
         chrome_options = Options()
         chrome_options.add_argument("user-agent="+ua)
         chrome_options.add_argument('--incognito')
+        chrome_options.add_argument('--ignore-certificate-errors-spki-list')
+        chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument('--proxy-server=http://%s' % PROXY)
         chrome_options.add_experimental_option("detach", True)
-        driver = webdriver.Chrome(path+"\\chromedriver.exe",options=chrome_options)
+        driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
         driver.get(site)
 
 def thread():
