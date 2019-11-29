@@ -7,12 +7,10 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import random
 from fake_useragent import UserAgent
 import fake_useragent
-#import threadingcd 
 from concurrent.futures import ProcessPoolExecutor
 import concurrent.futures
-from seleniumwire import webdriver
-
-
+from selenium import webdriver
+import threading
 
 path=os.path.dirname(os.path.abspath(__file__))
 proxy_list = []
@@ -22,7 +20,7 @@ with open(path+'\\config.txt','r') as f:
     site = config["Site"]
 
 
-def get_proxy():
+def get_proxy(count):
     proxies = open(path+"\\proxies.txt", 'r').read().splitlines()
     try:
         for line in proxies:
@@ -41,33 +39,63 @@ def get_proxy():
     except:
         print("Proxy Error")
 
-def spoof(lol):
-        ranua = UserAgent()
-        ua=ranua.random
-        if len(proxy_list) > 0:
-            PROXY = random.choice(proxy_list)
-            proxy_list.remove(PROXY)
-        else:
-            PROXY = random.choice(proxy_list)
-        
-        chrome_options = Options()
-        chrome_options.add_argument("user-agent="+ua)
-        chrome_options.add_argument('--incognito')
-        chrome_options.add_argument('--ignore-certificate-errors-spki-list')
-        chrome_options.add_argument('--ignore-certificate-errors')
-        chrome_options.add_argument('--proxy-server=http://%s' % PROXY)
-        chrome_options.add_experimental_option("detach", True)
-        driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
-        driver.get(site)
+def spoof(site,count):
+            ranua = UserAgent()
+            ua=ranua.random
+            
+            if len(proxy_list) > 0:
+                PROXY = random.choice(proxy_list)
+                #proxy_list.remove(PROXY)
+            else:
+                PROXY = random.choice(proxy_list)
+            
+            if '@' in PROXY:
+                split=PROXY.split("@")
+                PROXY = split[1]
+                PROXY2=split[0].split(":")
+                user=PROXY2[0]
+                password=PROXY2[1]
+                chrome_options = Options()
+                chrome_options.add_extension(path+"\\Proxy Auto Auth.crx")
+                chrome_options.add_argument("--proxy-server=http://{}".format(PROXY))
+                #chrome_options = Options()
+                chrome_options.add_argument("user-agent="+ua)
+                chrome_options.add_argument('--ignore-certificate-errors-spki-list')
+                chrome_options.add_argument('--ignore-certificate-errors')
+                chrome_options.add_experimental_option("detach", True)
+                chrome_options.add_experimental_option('useAutomationExtension', False)
+                driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
+                driver.get("chrome-extension://ggmdpepbjljkkkdaklfihhngmmgmpggp/options.html")
+                driver.find_element_by_id("login").send_keys(user)
+                driver.find_element_by_id("password").send_keys(password)
+                driver.find_element_by_id("retry").clear()
+                driver.find_element_by_id("retry").send_keys("2")
+                driver.find_element_by_id("save").click()
+                driver.get(str(site))
+            else: 
+                chrome_options = webdriver.ChromeOptions()
+                chrome_options.add_argument("user-agent="+ua)
+                chrome_options.add_argument('--incognito')
+                chrome_options.add_argument('--ignore-certificate-errors-spki-list')
+                chrome_options.add_argument('--ignore-certificate-errors')
+                chrome_options.add_argument("--proxy-server=http://{}".format(PROXY))
+                chrome_options.add_experimental_option("detach", True)
+                chrome_options.add_experimental_option('useAutomationExtension', False)
+                driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
+                driver.get(str(site))
+#spoof(site,count)
 
-def thread():
-    with concurrent.futures.ThreadPoolExecutor(max_workers=int(tasks)) as executor:
-        executor.map(spoof, range(int(tasks)))
-        # x = threading.Thread(target=spoof)
-        # x.start()
-        # x.join()
+def thread(tasks,site):
+    count = 0
+    get_proxy(count)    
 
-if __name__ == "__main__":
-    get_proxy()    
-    thread()
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=int(tasks)) as executor:
+    #      executor.map(spoof(site,count), range(int(tasks)))
+    #      count+=1
+    while int(count)<int(tasks):
+            x = threading.Thread(target=spoof,args=(site,count))
+            x.start()
+            count+=1
 
+# if __name__ == "__main__":
+    #thread(tasks,site,count)
