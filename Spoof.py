@@ -59,7 +59,7 @@ def spoof(site,count):
                 chrome_options.add_extension(path+"\\Proxy Auto Auth.crx")
                 chrome_options.add_argument("--proxy-server=http://{}".format(PROXY))
                 #chrome_options = Options()
-                chrome_options.add_argument("user-agent="+ua)
+                chrome_options.add_argument("user-agent="+"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")#ua)
                 chrome_options.add_argument('--ignore-certificate-errors-spki-list')
                 chrome_options.add_argument('--ignore-certificate-errors')
                 chrome_options.add_argument('--disable-plugins-discovery')
