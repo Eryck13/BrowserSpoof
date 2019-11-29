@@ -1,4 +1,5 @@
 Setup Guide coming soon.
+
 Temporary Guide:
 
 Download Python 3.7
@@ -12,7 +13,9 @@ Type python --version if you receive an error and not the version of python you 
 Copy paste these commands into your command prompt.
 
 pip install selenium
+
 pip install fake-useragent
+
 pip install concurrent-utils
 
 These will take a few seconds to a few minutes depending on your machine and internet connection.
