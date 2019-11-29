@@ -68,6 +68,7 @@ def spoof(site,count):
                 chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
                 driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
                 driver.get("chrome-extension://ggmdpepbjljkkkdaklfihhngmmgmpggp/options.html")
+                driver.implicitly_wait(2)
                 driver.find_element_by_id("login").send_keys(user)
                 driver.find_element_by_id("password").send_keys(password)
                 driver.find_element_by_id("retry").clear()
