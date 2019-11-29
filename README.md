@@ -4,7 +4,7 @@ Temporary Guide:
 
 Download Python 3.7
 
-During the installtion you will be asked if you would like to "add python 3.8 to path" click that checkbox and continue installation(very essential step)
+During the installtion you will be asked if you would like to "add python 3.7 to path" click that checkbox and continue installation(very essential step)
 
 Open command prompt
 
