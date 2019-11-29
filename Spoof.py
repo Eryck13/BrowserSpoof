@@ -45,7 +45,7 @@ def spoof(site,count):
             
             if len(proxy_list) > 0:
                 PROXY = random.choice(proxy_list)
-                #proxy_list.remove(PROXY)
+                proxy_list.remove(PROXY)
             else:
                 PROXY = random.choice(proxy_list)
             
@@ -62,6 +62,7 @@ def spoof(site,count):
                 chrome_options.add_argument("user-agent="+ua)
                 chrome_options.add_argument('--ignore-certificate-errors-spki-list')
                 chrome_options.add_argument('--ignore-certificate-errors')
+                chrome_options.add_argument('--disable-plugins-discovery')
                 chrome_options.add_experimental_option("detach", True)
                 chrome_options.add_experimental_option('useAutomationExtension', False)
                 driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
@@ -76,6 +77,7 @@ def spoof(site,count):
                 chrome_options = webdriver.ChromeOptions()
                 chrome_options.add_argument("user-agent="+ua)
                 chrome_options.add_argument('--incognito')
+                chrome_options.add_argument('--disable-plugins-discovery')
                 chrome_options.add_argument('--ignore-certificate-errors-spki-list')
                 chrome_options.add_argument('--ignore-certificate-errors')
                 chrome_options.add_argument("--proxy-server=http://{}".format(PROXY))
