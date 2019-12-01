@@ -11,6 +11,12 @@ from concurrent.futures import ProcessPoolExecutor
 import concurrent.futures
 from selenium import webdriver
 import threading
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+
+
 
 path=os.path.dirname(os.path.abspath(__file__))
 proxy_list = []
@@ -64,10 +70,11 @@ def spoof(site,count):
                 chrome_options.add_argument('--ignore-certificate-errors')
                 chrome_options.add_argument('--disable-plugins-discovery')
                 chrome_options.add_experimental_option("detach", True)
-                #chrome_options.add_experimental_option('useAutomationExtension', False)
+                chrome_options.add_experimental_option('useAutomationExtension', False)
                 chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
                 driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
                 driver.get("chrome-extension://ggmdpepbjljkkkdaklfihhngmmgmpggp/options.html")
+                WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID,"login")))
                 driver.maximize_window()
                 driver.implicitly_wait(5)
                 a=driver.find_element_by_id("login")
