@@ -1,6 +1,6 @@
 Setup Guide coming soon.
 
-Currently investigating issues with user:pass proxies not logging in for users, use IP:Port proxies for now until resolved.
+User:pass proxies situation is resolved.
 
 Temporary Guide:
 
