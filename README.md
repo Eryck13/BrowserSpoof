@@ -1,5 +1,7 @@
 Setup Guide coming soon.
 
+Currently investigating issues with user:pass proxies not logging in for users, use IP:Port proxies for now until resolved.
+
 Temporary Guide:
 
 Download Python 3.7
