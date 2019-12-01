@@ -73,7 +73,7 @@ def spoof(site,count):
                 chrome_options.add_experimental_option('useAutomationExtension', False)
                 chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
                 driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
-                driver.get("chrome-extension://ggmdpepbjljkkkdaklfihhngmmgmpggp/options.html")
+                #driver.get("chrome-extension://ggmdpepbjljkkkdaklfihhngmmgmpggp/options.html")
                 wait = WebDriverWait(driver, 10)
 
                 a=wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="login"]')))
