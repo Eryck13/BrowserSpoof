@@ -14,18 +14,28 @@ import threading
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from tkinter import *
 
+path=os.path.dirname(os.path.abspath(__file__))
 
-
+root= Tk()
+root.title('BoringBrowser')
+root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file=path+'\\BoringBot.png'))
+x=IntVar()
+y=StringVar()
+Label1=Label(root,text="Tasks")
+Label2=Label(root,text="Site")
+entry1 = Entry(root,textvariable=x)
+entry2 = Entry(root,textvariable=y) 
+Label1.grid(row=0,column=0)
+entry1.grid(row=0,column=1)
+Label2.grid(row=1,column=0)
+entry2.grid(row=1,column=1)    
+button1 = Button(text='Launch', command=lambda:thread(x.get(),y.get()))
+button1.grid(row=2,column=0)
 
 path=os.path.dirname(os.path.abspath(__file__))
 proxy_list = []
-# with open(path+'\\config.txt','r') as f:
-    # config = json.load(f)
-    # tasks = config["Tasks"]
-    # site = config["Site"]
-
-
 def get_proxy(count):
     proxies = open(path+"\\proxies.txt", 'r').read().splitlines()
     try:
@@ -64,7 +74,6 @@ def spoof(site,count):
                 chrome_options = Options()
                 chrome_options.add_extension(path+"\\Proxy Auto Auth.crx")
                 chrome_options.add_argument("--proxy-server=http://{}".format(PROXY))
-                #chrome_options = Options()
                 chrome_options.add_argument("user-agent="+"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")#ua)
                 chrome_options.add_argument('--ignore-certificate-errors-spki-list')
                 chrome_options.add_argument('--ignore-certificate-errors')
@@ -73,31 +82,21 @@ def spoof(site,count):
                 chrome_options.add_experimental_option('useAutomationExtension', False)
                 chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
                 driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
-                #driver.get("chrome-extension://ggmdpepbjljkkkdaklfihhngmmgmpggp/options.html")
                 wait = WebDriverWait(driver, 10)
-
                 a=wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="login"]')))
                 b=wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="password"]')))
                 c=wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="retry"]')))
                 d=wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="retry"]')))
                 e=wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="save"]')))
-                # driver.maximize_window()
-                # driver.implicitly_wait(5)
                 a.send_keys(user)
-                #b=driver.find_element_by_id("password")
                 b.send_keys(password)
-                #c=driver.find_element_by_id("retry")
                 c.clear()
-                #d=driver.find_element_by_id("retry")
                 d.send_keys("2")
-                #e=driver.find_element_by_id("save")
                 e.click()
                 driver.get(str(site))
             else: 
                 chrome_options = Options()
                 chrome_options.add_argument("--proxy-server=http://{}".format(PROXY))
-                #chrome_options = Options()
-                #chrome_options.add_argument('--incognito')
                 chrome_options.add_argument("user-agent="+"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")#ua)
                 chrome_options.add_argument('--ignore-certificate-errors-spki-list')
                 chrome_options.add_argument('--ignore-certificate-errors')
@@ -107,19 +106,13 @@ def spoof(site,count):
                 chrome_options.add_experimental_option("excludeSwitches", ['enable-automation']);
                 driver = webdriver.Chrome(options=chrome_options,executable_path=path+"\\chromedriver.exe")
                 driver.get(str(site))
-#spoof(site,count)
 
 def thread(tasks,site):
     count = 0
     get_proxy(count)    
-
-    # with concurrent.futures.ThreadPoolExecutor(max_workers=int(tasks)) as executor:
-    #      executor.map(spoof(site,count), range(int(tasks)))
-    #      count+=1
     while int(count)<int(tasks):
             x = threading.Thread(target=spoof,args=(site,count))
             x.start()
             count+=1
+root.mainloop()
 
-# if __name__ == "__main__":
-    #thread(tasks,site,count)
