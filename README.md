@@ -4,7 +4,7 @@ Extract the zip file, make sure all files are in the same folder.
 
 Fill the proxies.txt file with proxies in the corresponding format.
 
-Now all you need to do is run ui.py and fill out the text fields and click the launch button!
+Now all you need to do is run spoof.exe and fill out the text fields and click the launch button!
 
 Please create an issue  if an issue arises.
 
