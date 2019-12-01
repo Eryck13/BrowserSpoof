@@ -20,10 +20,10 @@ from selenium.webdriver.common.by import By
 
 path=os.path.dirname(os.path.abspath(__file__))
 proxy_list = []
-with open(path+'\\config.txt','r') as f:
-    config = json.load(f)
-    tasks = config["Tasks"]
-    site = config["Site"]
+# with open(path+'\\config.txt','r') as f:
+    # config = json.load(f)
+    # tasks = config["Tasks"]
+    # site = config["Site"]
 
 
 def get_proxy(count):
