@@ -1,4 +1,4 @@
-Download the Build.zip
+Download the build.zip
 
 Extract the zip file, make sure all files are in the same folder.
 
